@@ -1,11 +1,12 @@
 <?php
 
     // altervista
+	
     $databaseHost = 'localhost';
     $databaseName = 'my_francescobognini';
     $databaseUsername = '';
     $databasePassword = '';
-
+	
     // server2go
     /*
     $databaseHost = 'localhost';

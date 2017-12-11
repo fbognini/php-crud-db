@@ -77,7 +77,11 @@
 						$username = $row['username'];
 						$password = $row['password'];
 						$userType = $row['tipo'];
-						echo '<tr><td>'.$username.'</td><td>'.$password.'</td><td>'.$userType.'</td><td onclick="setUser(\''.$username.'\'); updateStatus(\'edit\')"><div class="updater">Modifica</div></td><td onclick="setUser(\''.$username.'\'); updateStatus(\'delete\')"><div class="updater">Elimina</div></td></tr>';
+						echo '<tr><td>'.$username.'</td><td>'.$password.'</td><td>'.$userType.'</td>';
+						if($username == "ROOT")
+							echo '<td colspan="2">Non è possibile modificare l\'utente ROOT</td></tr>';
+						else
+							echo '<td onclick="setUser(\''.$username.'\'); updateStatus(\'edit\')"><div class="updater">Modifica</div></td><td onclick="setUser(\''.$username.'\'); updateStatus(\'delete\')"><div class="updater">Elimina</div></td></tr>';
 					}
 					echo '</tbody></table>';
 					echo '<div class="form-field"><input type="button" value="aggiungi un utente" onclick="updateStatus(\'create\')"/></div>';
