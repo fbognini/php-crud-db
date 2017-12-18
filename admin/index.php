@@ -16,8 +16,8 @@
 	if($status == "createuser") {
 		$newUsername = strtoupper($_POST["newUsername"]);
 		$newPassword = strtoupper($_POST["newPassword"]);
-		$newUsertype = strtoupper($_POST["newUsertype"]);
-		$query = 'SELECT * FROM utenti WHERE username="'.$newUsername.'";';
+		$newUserType = strtoupper($_POST["newUsertype"]);
+		$query = 'SELECT * FROM crud_utenti WHERE username="'.$newUsername.'";';
 		$result = mysqli_query($mysqli, $query);
 		$exist = false;
 		if(mysqli_num_rows($result)>0){  
@@ -29,10 +29,10 @@
 			$status = "create";
 		}
 		else {
-			$usertypes = array("A" => "AMMINISTRATORE", "U" => "UTENTE");
-			$newUserMessage = '<div class="table-responsive"><table class="table table-striped table-bordered text-center"><thead><tr><th>Username</th><th>Password</th><th>Tipo utente</th></tr></thead><tbody><tr><td>'.$newUsername.'</td><td>'.$newPassword.'</td><td>'.$usertypes[$newUsertype].'</td></tr></tbody></table></div>';
+			$userTypes = array("A" => "AMMINISTRATORE", "U" => "UTENTE");
+			$newUserMessage = '<div class="table-responsive"><table class="table table-striped table-bordered text-center"><thead><tr><th>Username</th><th>Password</th><th>Tipo utente</th></tr></thead><tbody><tr><td>'.$newUsername.'</td><td>'.$newPassword.'</td><td>'.$userTypes[$newUserType].'</td></tr></tbody></table></div>';
 			$status = "created";
-			$query = 'INSERT INTO utenti (username, password, tipo) VALUES ("'.$newUsername.'","'.$newPassword.'","'.$newUsertype.'");';
+			$query = 'INSERT INTO crud_utenti (username, password, tipo) VALUES ("'.$newUsername.'","'.$newPassword.'","'.$newUserType.'");';
 			$result = mysqli_query($mysqli, $query);
 			// echo $query;
 		}
@@ -94,13 +94,13 @@
 					echo '<table class="table table-striped table-bordered text-center">';
 					echo '<thead><tr><th>Username</th><th>Password</th><th>Tipo</th><th colspan="2">Aggiorna</th></tr></thead>';
 					echo '<tbody>';
-					$query = 'SELECT * FROM utenti;';
+					$query = 'SELECT * FROM crud_utenti;';
 					$result = mysqli_query($mysqli, $query);
 					while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 						$username = $row['username'];
 						$password = $row['password'];
-						$usertype = $row['tipo'];
-						echo '<tr><td>'.$username.'</td><td>'.$password.'</td><td>'.$usertype.'</td>';
+						$userType = $row['tipo'];
+						echo '<tr><td>'.$username.'</td><td>'.$password.'</td><td>'.$userType.'</td>';
 						if($username == "ROOT")
 							echo '<td colspan="2">Non è possibile modificare l\'utente ROOT</td></tr>';
 						else
@@ -138,7 +138,7 @@
 						echo '<button type="button" class="btn btn-primary btn-lg btn-block" onclick="updateStatus(\'read\')">TORNA AL MENU</button>';
 					}
 					else{
-						$query = 'SELECT * FROM utenti WHERE username="'.$userSelected.'";';
+						$query = 'SELECT * FROM crud_utenti WHERE username="'.$userSelected.'";';
 						$result = mysqli_query($mysqli, $query);
 						if(mysqli_num_rows($result)>0){  
 							$row = mysqli_fetch_assoc($result);
@@ -163,8 +163,8 @@
 					echo '<p>'.$userSelected.' è stato modificato</p>';
 					$editUsername = $userSelected;
 					$editPassword = strtoupper($_POST["editPassword"]);
-					$editUsertype = strtoupper($_POST["editUsertype"]);					
-					$query = 'UPDATE utenti SET username="'.$editUsername.'", password="'.$editPassword.'", tipo="'.$editUsertype.'" WHERE username="'.$userSelected.'";';
+					$editUserType = strtoupper($_POST["editUsertype"]);					
+					$query = 'UPDATE crud_utenti SET username="'.$editUsername.'", password="'.$editPassword.'", tipo="'.$editUserType.'" WHERE username="'.$userSelected.'";';
 					$result = mysqli_query($mysqli, $query);
 					echo '<button type="submit" class="btn btn-primary btn-lg btn-block" onclick="updateStatus(\'menu\')">TORNA AL MENU</button>';
 					break;				
@@ -174,7 +174,7 @@
 						echo "<p class='error'>Impossibile eliminare se stessi</p>";
 					else{
 						echo '<p>'.$userSelected.' è stato eliminato</p>';
-						$query = 'DELETE FROM utenti WHERE username="'.$userSelected.'";';
+						$query = 'DELETE FROM crud_utenti WHERE username="'.$userSelected.'";';
 						$result = mysqli_query($mysqli, $query);
 					}
 					echo '<button type="submit" class="btn btn-primary btn-lg btn-block" onclick="updateStatus(\'menu\')">TORNA AL MENU</button>';

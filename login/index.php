@@ -4,7 +4,7 @@
 	if($_SERVER["REQUEST_METHOD"] == "POST") {
 		$username = strtoupper($_POST["username"]);
 		$password = strtoupper($_POST["password"]);
-		$query = 'SELECT * FROM utenti WHERE username="'.$username.'" AND password="'.$password.'";';
+		$query = 'SELECT * FROM crud_utenti WHERE username="'.$username.'" AND password="'.$password.'";';
 		$result = mysqli_query($mysqli, $query);
 		if(mysqli_num_rows($result)>0){  
 			$row = mysqli_fetch_assoc($result);
@@ -30,7 +30,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
-		<link rel="stylesheet" href="../css/style.css">
+	<link rel="stylesheet" href="../css/style.css">
 		
   </head>
 	<body class="login-page">
