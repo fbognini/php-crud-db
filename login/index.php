@@ -2,8 +2,8 @@
 	session_start();
 	include_once("../config.php");
 	if($_SERVER["REQUEST_METHOD"] == "POST") {
-		$username = strtoupper($_POST["username"]);
-		$password = md5(strtoupper($_POST["password"]));
+		$username = mysqli_real_escape_string($mysqli, strtoupper($_POST["username"]));
+		$password = mysqli_real_escape_string($mysqli, md5(strtoupper($_POST["password"])));
 		$query = 'SELECT * FROM login_utenti WHERE username="'.$username.'" AND password="'.$password.'";';
 		$result = mysqli_query($mysqli, $query);
 		if(mysqli_num_rows($result)>0){  

@@ -14,9 +14,9 @@
 		$userSelected = $_POST["userSelected"];
 
 	if($status == "createuser") {
-		$newUsername = strtoupper($_POST["newUsername"]);
-		$newPassword = md5(strtoupper($_POST["newPassword"]));
-		$newUserType = strtoupper($_POST["newUsertype"]);
+		$newUsername = mysqli_real_escape_string($mysqli, strtoupper($_POST["newUsername"]));
+		$newPassword = mysqli_real_escape_string($mysqli, md5(strtoupper($_POST["newPassword"])));
+		$newUserType = mysqli_real_escape_string($mysqli, strtoupper($_POST["newUsertype"]));
 		$query = 'SELECT * FROM login_utenti WHERE username="'.$newUsername.'";';
 		$result = mysqli_query($mysqli, $query);
 		$exist = false;
@@ -161,7 +161,7 @@
 				case 'edited':
 					echo '<h4>Modifica un utente</h4>';
 					echo '<p>'.$userSelected.' è stato modificato</p>';
-					$editUserType = strtoupper($_POST["editUsertype"]);					
+					$editUserType = mysqli_real_escape_string($mysqli, strtoupper($_POST["editUsertype"]));					
 					$query = 'UPDATE login_utenti SET tipo="'.$editUserType.'" WHERE username="'.$userSelected.'";';
 					$result = mysqli_query($mysqli, $query);
 					echo '<button type="submit" class="btn btn-primary btn-lg btn-block" onclick="updateStatus(\'menu\')">TORNA AL MENU</button>';
