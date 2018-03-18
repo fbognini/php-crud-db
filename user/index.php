@@ -25,7 +25,7 @@
 			<div class="container">
 				<h1 class="display-4">
 				<?
-					echo "Benvenuto ".$_SESSION["username"];
+					echo "Benvenuto ".htmlentities($_SESSION["username"]);
 				?>
 				</h1>
 			</div>

@@ -17,6 +17,8 @@
 		$newUsername = mysqli_real_escape_string($mysqli, strtoupper($_POST["newUsername"]));
 		$newPassword = mysqli_real_escape_string($mysqli, md5(strtoupper($_POST["newPassword"])));
 		$newUserType = mysqli_real_escape_string($mysqli, strtoupper($_POST["newUsertype"]));
+		echo "$newUsername $newPassword";
+		
 		$query = 'SELECT * FROM login_utenti WHERE username="'.$newUsername.'";';
 		$result = mysqli_query($mysqli, $query);
 		$exist = false;
@@ -25,12 +27,12 @@
 		}
 
 		if ($exist) {
-			$newUserError = "Impossibile creare l'utente ".$newUsername;
+			$newUserError = "Impossibile creare l'utente ".htmlentities($newUsername);
 			$status = "create";
 		}
 		else {
 			$userTypes = array("A" => "AMMINISTRATORE", "U" => "UTENTE");
-			$newUserMessage = '<div class="table-responsive"><table class="table table-striped table-bordered text-center"><thead><tr><th>Username</th><th>Password</th><th>Tipo utente</th></tr></thead><tbody><tr><td>'.$newUsername.'</td><td>'.$newPassword.'</td><td>'.$userTypes[$newUserType].'</td></tr></tbody></table></div>';
+			$newUserMessage = '<div class="table-responsive"><table class="table table-striped table-bordered text-center"><thead><tr><th>Username</th><th>Password</th><th>Tipo utente</th></tr></thead><tbody><tr><td>'.htmlentities($newUsername).'</td><td>'.htmlentities($newPassword).'</td><td>'.$userTypes[$newUserType].'</td></tr></tbody></table></div>';
 			$status = "created";
 			$query = 'INSERT INTO login_utenti (username, password, tipo) VALUES ("'.$newUsername.'","'.$newPassword.'","'.$newUserType.'");';
 			$result = mysqli_query($mysqli, $query);
@@ -74,7 +76,7 @@
 			<div class="container">
 				<h1 class="display-4">
 				<?
-					echo "Benvenuto ".$_SESSION["username"];
+					echo "Benvenuto ".htmlentities($_SESSION["username"]);
 				?>
 				</h1>
 			</div>
@@ -97,8 +99,8 @@
 					$query = 'SELECT * FROM login_utenti;';
 					$result = mysqli_query($mysqli, $query);
 					while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
-						$username = $row['username'];
-						$password = $row['password'];
+						$username = htmlentities($row['username']);
+						$password = htmlentities($row['password']);
 						$userType = $row['tipo'];
 						echo '<tr><td>'.$username.'</td><td>'.$password.'</td><td>'.$userType.'</td>';
 						if($username == "ROOT")
@@ -142,8 +144,8 @@
 						$result = mysqli_query($mysqli, $query);
 						if(mysqli_num_rows($result)>0){  
 							$row = mysqli_fetch_assoc($result);
-							$username = $row['username'];
-							$password = $row['password'];
+							$username = htmlentities($row['username']);
+							$password = htmlentities($row['password']);
 							$usertype = $row['tipo'];
 						}
 						echo '<p>Compila la form per modificare l\'utente '.$username.'</p>';
@@ -160,7 +162,7 @@
 					break;
 				case 'edited':
 					echo '<h4>Modifica un utente</h4>';
-					echo '<p>'.$userSelected.' è stato modificato</p>';
+					echo '<p>'.htmlentities($userSelected).' è stato modificato</p>';
 					$editUserType = mysqli_real_escape_string($mysqli, strtoupper($_POST["editUsertype"]));					
 					$query = 'UPDATE login_utenti SET tipo="'.$editUserType.'" WHERE username="'.$userSelected.'";';
 					$result = mysqli_query($mysqli, $query);
@@ -171,7 +173,7 @@
 					if ($userSelected == $_SESSION["username"])
 						echo "<p class='error'>Impossibile eliminare se stessi</p>";
 					else{
-						echo '<p>'.$userSelected.' è stato eliminato</p>';
+						echo '<p>'.htmlentities($userSelected).' è stato eliminato</p>';
 						$query = 'DELETE FROM login_utenti WHERE username="'.$userSelected.'";';
 						$result = mysqli_query($mysqli, $query);
 					}
