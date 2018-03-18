@@ -15,9 +15,9 @@
 
 	if($status == "createuser") {
 		$newUsername = strtoupper($_POST["newUsername"]);
-		$newPassword = strtoupper($_POST["newPassword"]);
+		$newPassword = md5(strtoupper($_POST["newPassword"]));
 		$newUserType = strtoupper($_POST["newUsertype"]);
-		$query = 'SELECT * FROM crud_utenti WHERE username="'.$newUsername.'";';
+		$query = 'SELECT * FROM login_utenti WHERE username="'.$newUsername.'";';
 		$result = mysqli_query($mysqli, $query);
 		$exist = false;
 		if(mysqli_num_rows($result)>0){  
@@ -32,7 +32,7 @@
 			$userTypes = array("A" => "AMMINISTRATORE", "U" => "UTENTE");
 			$newUserMessage = '<div class="table-responsive"><table class="table table-striped table-bordered text-center"><thead><tr><th>Username</th><th>Password</th><th>Tipo utente</th></tr></thead><tbody><tr><td>'.$newUsername.'</td><td>'.$newPassword.'</td><td>'.$userTypes[$newUserType].'</td></tr></tbody></table></div>';
 			$status = "created";
-			$query = 'INSERT INTO crud_utenti (username, password, tipo) VALUES ("'.$newUsername.'","'.$newPassword.'","'.$newUserType.'");';
+			$query = 'INSERT INTO login_utenti (username, password, tipo) VALUES ("'.$newUsername.'","'.$newPassword.'","'.$newUserType.'");';
 			$result = mysqli_query($mysqli, $query);
 			// echo $query;
 		}
@@ -94,7 +94,7 @@
 					echo '<table class="table table-striped table-bordered text-center">';
 					echo '<thead><tr><th>Username</th><th>Password</th><th>Tipo</th><th colspan="2">Aggiorna</th></tr></thead>';
 					echo '<tbody>';
-					$query = 'SELECT * FROM crud_utenti;';
+					$query = 'SELECT * FROM login_utenti;';
 					$result = mysqli_query($mysqli, $query);
 					while ($row = mysqli_fetch_array($result, MYSQLI_ASSOC)) {
 						$username = $row['username'];
@@ -138,7 +138,7 @@
 						echo '<button type="button" class="btn btn-primary btn-lg btn-block" onclick="updateStatus(\'read\')">TORNA AL MENU</button>';
 					}
 					else{
-						$query = 'SELECT * FROM crud_utenti WHERE username="'.$userSelected.'";';
+						$query = 'SELECT * FROM login_utenti WHERE username="'.$userSelected.'";';
 						$result = mysqli_query($mysqli, $query);
 						if(mysqli_num_rows($result)>0){  
 							$row = mysqli_fetch_assoc($result);
@@ -148,7 +148,7 @@
 						}
 						echo '<p>Compila la form per modificare l\'utente '.$username.'</p>';
 						echo '<input type="text" name="editUsername" class="form-control" value="'.$username.'" disabled>';
-						echo '<input type="text" name="editPassword" class="form-control" value="'.$password.'" required autofocus>';
+						echo '<input type="text" name="editPassword" class="form-control" value="'.$password.'" disabled>';
 						echo '<label>Tipo utente</label>';
 						echo '<select class="form-control" name="editUsertype">';
 						echo '<option value="U"'.($usertype == "U" ? ' selected' : '').'>Utente</option>';
@@ -161,10 +161,8 @@
 				case 'edited':
 					echo '<h4>Modifica un utente</h4>';
 					echo '<p>'.$userSelected.' è stato modificato</p>';
-					$editUsername = $userSelected;
-					$editPassword = strtoupper($_POST["editPassword"]);
 					$editUserType = strtoupper($_POST["editUsertype"]);					
-					$query = 'UPDATE crud_utenti SET username="'.$editUsername.'", password="'.$editPassword.'", tipo="'.$editUserType.'" WHERE username="'.$userSelected.'";';
+					$query = 'UPDATE login_utenti SET tipo="'.$editUserType.'" WHERE username="'.$userSelected.'";';
 					$result = mysqli_query($mysqli, $query);
 					echo '<button type="submit" class="btn btn-primary btn-lg btn-block" onclick="updateStatus(\'menu\')">TORNA AL MENU</button>';
 					break;				
@@ -174,7 +172,7 @@
 						echo "<p class='error'>Impossibile eliminare se stessi</p>";
 					else{
 						echo '<p>'.$userSelected.' è stato eliminato</p>';
-						$query = 'DELETE FROM crud_utenti WHERE username="'.$userSelected.'";';
+						$query = 'DELETE FROM login_utenti WHERE username="'.$userSelected.'";';
 						$result = mysqli_query($mysqli, $query);
 					}
 					echo '<button type="submit" class="btn btn-primary btn-lg btn-block" onclick="updateStatus(\'menu\')">TORNA AL MENU</button>';

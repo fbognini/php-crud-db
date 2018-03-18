@@ -28,7 +28,6 @@
 					echo "Benvenuto ".$_SESSION["username"];
 				?>
 				</h1>
-				<p>Pasta alla carbonara</p>
 			</div>
         </div>
 		<div class="container">

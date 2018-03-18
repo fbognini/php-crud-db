@@ -3,8 +3,8 @@
 	include_once("../config.php");
 	if($_SERVER["REQUEST_METHOD"] == "POST") {
 		$username = strtoupper($_POST["username"]);
-		$password = strtoupper($_POST["password"]);
-		$query = 'SELECT * FROM crud_utenti WHERE username="'.$username.'" AND password="'.$password.'";';
+		$password = md5(strtoupper($_POST["password"]));
+		$query = 'SELECT * FROM login_utenti WHERE username="'.$username.'" AND password="'.$password.'";';
 		$result = mysqli_query($mysqli, $query);
 		if(mysqli_num_rows($result)>0){  
 			$row = mysqli_fetch_assoc($result);
@@ -24,7 +24,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-		<title>CRUD su DB</title>
+		<title>Login</title>
 		
 		<meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
